@@ -52,7 +52,7 @@ public class Controller {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/drivers/{driverId}/select/cars/{carId}")
 	public void selectCar(@RequestBody Driver driver, @PathVariable int driverId, @PathVariable int carId)
-			throws CarAlreadyInUseException {
+			throws CarAlreadyInUseException, DriverAlreadyDrivesCarException {
 		Driver d = null;
 		Car c = null;
 		int i;
@@ -68,6 +68,9 @@ public class Controller {
 		}
 		if (c.getDriverId() != -1)
 			throw new CarAlreadyInUseException();
+
+		if (d.getCarId() != -1)
+			throw new DriverAlreadyDrivesCarException();
 
 		d.setCarId(carId);
 		c.setDriverId(driverId);
